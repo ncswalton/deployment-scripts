@@ -1,14 +1,22 @@
 #!/bin/bash
 
-yum update -y
+# package update
+sudo yum update -y
 
-yum -y install java-11-openjdk java-11-openjdk-devel
+# install java
+sudo yum -y install java-11-openjdk java-11-openjdk-devel
 
+# get jenkins
 sudo wget –O /etc/yum.repos.d/jenkins.repo http://pkg.jenkins-ci.org/redhat-stable/jenkins.repo
 
+# jenkins security key [?]
 sudo rpm ––import https://pkg.jenkins.io/redhat/jenkins.io.key
 
+# install jenkins
 sudo yum install jenkins
 
+# start jenkins
 sudo systemctl start jenkins
+
+# enable jenkins
 sudo systemctl enable jenkins
