@@ -13,7 +13,7 @@ sudo wget -P /etc/yum.repos.d "http://pkg.jenkins-ci.org/redhat-stable/jenkins.r
 sudo rpm ––import https://pkg.jenkins.io/redhat/jenkins.io.key
 
 # install jenkins
-sudo yum install jenkins
+sudo yum -y install jenkins
 
 # start jenkins
 sudo systemctl start jenkins
