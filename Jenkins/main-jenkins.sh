@@ -64,12 +64,12 @@ curl -X POST -u "admin:$password" $url/setupWizard/createAdminUser \
 ################################
 
 cookie_jar="$(mktemp)"
-crumb_data=$(curl -u "$user:$password" --cookie-jar "$cookie_jar" $url/crumbIssuer/api/xml?xpath=concat\(//crumbRequestField,%22:%22,//crumb\))
+crumb_data=$(curl -u "$username:$new_password" --cookie-jar "$cookie_jar" $url/crumbIssuer/api/xml?xpath=concat\(//crumbRequestField,%22:%22,//crumb\))
 arr_crumb=(${crumb_data//:/ })
 crumb=$(echo ${arr_crumb[1]})
 
 # MAKE THE REQUEST TO DOWNLOAD AND INSTALL REQUIRED MODULES
-curl -X POST -u "$user:$password" $url/pluginManager/installPlugins \
+curl -X POST -u "$username:$new_password" $url/pluginManager/installPlugins \
   -H 'Connection: keep-alive' \
   -H 'Accept: application/json, text/javascript, */*; q=0.01' \
   -H 'X-Requested-With: XMLHttpRequest' \
@@ -87,11 +87,11 @@ curl -X POST -u "$user:$password" $url/pluginManager/installPlugins \
 url_urlEncoded=$(python -c "import urllib;print urllib.quote(raw_input(), safe='')" <<< $url)
 
 cookie_jar="$(mktemp)"
-crumb_data=$(curl -u "$user:$password" --cookie-jar "$cookie_jar" $url/crumbIssuer/api/xml?xpath=concat\(//crumbRequestField,%22:%22,//crumb\))
+crumb_data=$(curl -u "$username:$new_password" --cookie-jar "$cookie_jar" $url/crumbIssuer/api/xml?xpath=concat\(//crumbRequestField,%22:%22,//crumb\))
 arr_crumb=(${crumb_data//:/ })
 crumb=$(echo ${arr_crumb[1]})
 
-curl -X POST -u "$user:$password" $url/setupWizard/configureInstance \
+curl -X POST -u "$username:$new_password" $url/setupWizard/configureInstance \
   -H 'Connection: keep-alive' \
   -H 'Accept: application/json, text/javascript, */*; q=0.01' \
   -H 'X-Requested-With: XMLHttpRequest' \
