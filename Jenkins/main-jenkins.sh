@@ -84,7 +84,7 @@ curl -X POST -u "$user:$password" $url/pluginManager/installPlugins \
 # Configuration Step 3 - URL
 ################################
 
-url_urlEncoded=$(python -c "import urllib;print urllib.quote(raw_input(), safe='')" <<< "$url")
+url_urlEncoded=$(python -c "import urllib;print urllib.quote(raw_input(), safe='')" <<< $url)
 
 cookie_jar="$(mktemp)"
 crumb_data=$(curl -u "$user:$password" --cookie-jar "$cookie_jar" $url/crumbIssuer/api/xml?xpath=concat\(//crumbRequestField,%22:%22,//crumb\))
