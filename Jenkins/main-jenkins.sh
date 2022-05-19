@@ -10,13 +10,9 @@ sudo yum update -y
 # install java
 sudo yum -y install java-11-openjdk java-11-openjdk-devel
 
-# get jenkins
+# get/validate/install jenkins
 sudo wget -P /etc/yum.repos.d "http://pkg.jenkins-ci.org/redhat-stable/jenkins.repo"
-
-# validate repo 
 sudo rpm --import https://pkg.jenkins.io/redhat/jenkins.io.key
-
-# install jenkins
 sudo yum -y install jenkins
 
 # start/enable jenkins
@@ -103,4 +99,4 @@ curl -X POST -u "$user:$password" $url/setupWizard/configureInstance \
   -H 'Content-Type: application/x-www-form-urlencoded' \
   -H 'Accept-Language: en,en-US;q=0.9,it;q=0.8' \
   --cookie $cookie_jar \
-  --data-raw "rootUrl=$url_urlEncoded%2F&Jenkins-Crumb=$crumb&json=%7B%22rootUrl%22%3A%20%22$url_urlEncoded%2F%22%2C%20%22Jenkins-Crumb%22%3A%20%22$crumb%22%7D&core%3Aapply=&Submit=Save&json=%7B%22rootUrl%22%3A%20%22$url_urlEncoded%2F%22%2C%20%22Jenkins-Crumb%22%3A%20%22$crumb%22%7D"
+  --data "rootUrl=$url_urlEncoded%2F&Jenkins-Crumb=$crumb&json=%7B%22rootUrl%22%3A%20%22$url_urlEncoded%2F%22%2C%20%22Jenkins-Crumb%22%3A%20%22$crumb%22%7D&core%3Aapply=&Submit=Save&json=%7B%22rootUrl%22%3A%20%22$url_urlEncoded%2F%22%2C%20%22Jenkins-Crumb%22%3A%20%22$crumb%22%7D"
