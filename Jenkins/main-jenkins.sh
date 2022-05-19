@@ -17,7 +17,7 @@ sudo wget -P /etc/yum.repos.d "http://pkg.jenkins-ci.org/redhat-stable/jenkins.r
 sudo rpm --import https://pkg.jenkins.io/redhat/jenkins.io.key
 
 # install jenkins
-sudo yum install jenkins
+sudo yum -y install jenkins
 
 # start/enable jenkins
 sudo systemctl start jenkins
@@ -33,8 +33,8 @@ password=$(sudo cat /var/lib/jenkins/secrets/initialAdminPassword)
 # create variables for Jenkins credentials
 # they are passed in as command line arguments
 # url encode with python
-username=$(python -c "import urllib;print urllib.quote(raw_input(), safe='')" <<< "$1") # First argument is username
-new_password=$(python -c "import urllib;print urllib.quote(raw_input(), safe='')" <<< "$2") # Second argument is password
+username=$(python -c "import urllib;print urllib.quote(raw_input(), safe='')" <<< $1) # First argument is username
+new_password=$(python -c "import urllib;print urllib.quote(raw_input(), safe='')" <<< $2) # Second argument is password
 fullname=$(python -c "import urllib;print urllib.quote(raw_input(), safe='')" <<< "Jenkins Administrator")
 email=$(python -c "import urllib;print urllib.quote(raw_input(), safe='')" <<< "hello@xyz.com")
 
@@ -82,3 +82,25 @@ curl -X POST -u "$user:$password" $url/pluginManager/installPlugins \
   -H 'Accept-Language: en,en-US;q=0.9,it;q=0.8' \
   --cookie $cookie_jar \
   --data "{'dynamicLoad':true,'plugins':['cloudbees-folder','antisamy-markup-formatter','build-timeout','credentials-binding','timestamper','ws-cleanup','ant','gradle','workflow-aggregator','github-branch-source','pipeline-github-lib','pipeline-stage-view','git','ssh-slaves','matrix-auth','pam-auth','ldap','email-ext','mailer'],'Jenkins-Crumb':'$crumb'}"
+
+
+################################
+# Configuration Step 3 - URL
+################################
+
+url_urlEncoded=$(python -c "import urllib;print urllib.quote(raw_input(), safe='')" <<< "$url")
+
+cookie_jar="$(mktemp)"
+crumb_data=$(curl -u "$user:$password" --cookie-jar "$cookie_jar" $url/crumbIssuer/api/xml?xpath=concat\(//crumbRequestField,%22:%22,//crumb\))
+arr_crumb=(${crumb_data//:/ })
+crumb=$(echo ${arr_crumb[1]})
+
+curl -X POST -u "$user:$password" $url/setupWizard/configureInstance \
+  -H 'Connection: keep-alive' \
+  -H 'Accept: application/json, text/javascript, */*; q=0.01' \
+  -H 'X-Requested-With: XMLHttpRequest' \
+  -H "$crumb_data" \
+  -H 'Content-Type: application/x-www-form-urlencoded' \
+  -H 'Accept-Language: en,en-US;q=0.9,it;q=0.8' \
+  --cookie $cookie_jar \
+  --data-raw "rootUrl=$url_urlEncoded%2F&Jenkins-Crumb=$crumb&json=%7B%22rootUrl%22%3A%20%22$url_urlEncoded%2F%22%2C%20%22Jenkins-Crumb%22%3A%20%22$crumb%22%7D&core%3Aapply=&Submit=Save&json=%7B%22rootUrl%22%3A%20%22$url_urlEncoded%2F%22%2C%20%22Jenkins-Crumb%22%3A%20%22$crumb%22%7D"
