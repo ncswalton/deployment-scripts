@@ -1,3 +1,5 @@
+$secure_pass = ConvertTo-SecureString $args[0] -asplaintext -force
+
 Install-WindowsFeature -name AD-Domain-Services -IncludeManagementTools
 
 # make sure success is true [?] and exit code is Success...
@@ -6,7 +8,7 @@ Install-WindowsFeature -name AD-Domain-Services -IncludeManagementTools
 # first check pre req's
 # secure string password is passed as argument to script
 # if status is success from test we can proceed with AD isntall
-Test-ADDSForestInstallation -DomainName itingredients.com -InstallDns -SafeModeAdministratorPassword $password
+Test-ADDSForestInstallation -DomainName itingredients.com -InstallDns -SafeModeAdministratorPassword $secure_pass
 
 # -Confirm:$false to answer 'yes'
-Install-ADDSForest -DomainName itingredients.com -InstallDNS -Confirm:$false -SafeModeAdministratorPassword $password
+Install-ADDSForest -DomainName itingredients.com -InstallDNS -Confirm:$false -SafeModeAdministratorPassword $secure_pass
