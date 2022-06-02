@@ -18,4 +18,3 @@ echo $2 > /home/testUser/creds.txt
 
 curl -o /home/testUser/agent.jar -Ssl http://$1:8080/jnlpJars/agent.jar
 
-sshpass -p '$2' scp -r testUser@$1:/home/testUser/secret.txt /home/testUser/secret.txt

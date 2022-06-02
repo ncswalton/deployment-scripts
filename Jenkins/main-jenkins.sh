@@ -25,7 +25,6 @@ sudo systemctl enable jenkins
 
 url=http://localhost:8080
 password=$(sudo cat /var/lib/jenkins/secrets/initialAdminPassword)
-echo $password > /home/testUser/secret.txt
 
 # create variables for Jenkins credentials
 # they are passed in as command line arguments
