@@ -47,7 +47,7 @@ command=$(curl -u $username:$password $url/computer/TestingScriptName/ \
   -H 'Connection: keep-alive' \
   -H "$crumb_data" \
   -H "Content-Type: application/x-www-form-urlencoded" \
-  --cookie $cookie_jar 2>&1 |  grep -o 'jnlpUrl.*workDir' test.txt | head -1)
+  --cookie $cookie_jar 2>&1 |  grep -o 'jnlpUrl.*workDir' | head -1)
 
 # jar command suffix
 suffix=" /opt/jenkins 2>&1"
