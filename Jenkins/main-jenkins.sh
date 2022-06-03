@@ -23,11 +23,11 @@ sudo systemctl enable jenkins
 # Configuration Step 1 - Unlock
 ################################
 
-url=http://localhost:8080
+url=http://10.5.0.4:8080
 password=$(sudo cat /var/lib/jenkins/secrets/initialAdminPassword)
 
 # create variables for Jenkins credentials
-# they are passed in as command line arguments
+# they are passed in as secure parameters
 # url encode with python
 username=$(python -c "import urllib;print urllib.quote(raw_input(), safe='')" <<< $1) # First argument is username
 new_password=$(python -c "import urllib;print urllib.quote(raw_input(), safe='')" <<< $2) # Second argument is password
