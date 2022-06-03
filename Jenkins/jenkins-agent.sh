@@ -43,7 +43,7 @@ crumb=$(echo ${arr_crumb[1]})
 
 # Retrieve the secret string
 # Use knowledge of string structure to do pattern matching
-command=$(curl -u $username:$password $url/computer/${node_name}/ \
+command=$(curl -u $username:$password $url/computer/CentOSDemoAgent/ \
   -H "Accept: application/json, text/javascript" \
   -H 'Connection: keep-alive' \
   -H "$crumb_data" \
