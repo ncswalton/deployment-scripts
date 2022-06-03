@@ -10,7 +10,7 @@ sudo yum -y install maven
 # Create directory on Agent VM for Jenkins
 mkdir /opt/jenkins
 # URL of Controller 
-url=http://$1:8080
+url= "http://$1:8080"
 password=$2 # maybe avoid storing in variable?
 username=$3
 node_name=$4
