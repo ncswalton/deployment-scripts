@@ -10,14 +10,14 @@ sudo yum -y install maven
 # Create directory on Agent VM for Jenkins
 mkdir /opt/jenkins
 # URL of Controller 
-url= "http://$1:8080"
+url="http://$1:8080"
 password=$2 # maybe avoid storing in variable?
 username=$3
 # not using this right now
 node_name=$4
 
 # download agent.jar from the controller
-curl -o /home/$3/agent.jar -Ssl $url/jnlpJars/agent.jar
+curl -o /home/$3/agent.jar -Ssl "$url/jnlpJars/agent.jar"
 
 # get cookie & crumb for auth
 cookie_jar="$(mktemp)"
