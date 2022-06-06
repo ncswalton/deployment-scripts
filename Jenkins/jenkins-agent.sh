@@ -58,3 +58,5 @@ prefix="nohup java -jar /home/$3/agent.jar -"
 jarExecutionCommand=$prefix$command$suffix
 # Execute
 $jarExecutionCommand
+
+exit 0
