@@ -1,5 +1,5 @@
 #!/bin/bash
-# args[0] = controller ip, args[1] = jenkins pw, args[2] = username, args[3] = nodeName
+# args[0] = controller ip, args[1] = jenkins pw, args[2] = username
 # NOTE: script assumes a single shared username for Jenkins and the VMs.
 
 # Package update, install Java & Maven
@@ -56,7 +56,8 @@ suffix=" /opt/jenkins"
 prefix="nohup java -jar /home/$3/agent.jar -"
 # Build command with suffix & prefix
 jarExecutionCommand=$prefix$command$suffix
-# Execute
-$jarExecutionCommand
+
+# Schedule execution
+echo $jarExecutionCommand | at now + 1 min
 
 exit 0
