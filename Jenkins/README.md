@@ -21,6 +21,7 @@ Usage: `bash agent.sh [ControllerIP] [jenkinsPassword] [username] [nodeName]`
 
 - Assumes a single common username for Jenkins and the Agent VM.
 - Configures an Agent and connects it to the Controller.
+- Currently nodeName argument is unused. New node name is hard coded for testing.
 
 ---
 ### The code is based on this blog post
