@@ -4,10 +4,7 @@
 # Software installation
 ################################
 
-# package update
 sudo yum update -y
-
-# install java
 sudo yum -y install java-11-openjdk java-11-openjdk-devel
 
 # get/validate/install jenkins
@@ -15,7 +12,6 @@ sudo wget -P /etc/yum.repos.d "http://pkg.jenkins-ci.org/redhat-stable/jenkins.r
 sudo rpm --import https://pkg.jenkins.io/redhat/jenkins.io.key
 sudo yum -y install jenkins
 
-# start/enable jenkins
 sudo systemctl start jenkins
 sudo systemctl enable jenkins
 
@@ -34,21 +30,13 @@ new_password=$(python -c "import urllib;print urllib.quote(raw_input(), safe='')
 fullname=$(python -c "import urllib;print urllib.quote(raw_input(), safe='')" <<< "Jenkins Administrator")
 email=$(python -c "import urllib;print urllib.quote(raw_input(), safe='')" <<< "hello@xyz.com")
 
-echo "username: ${username}"
-echo "new_password: ${new_password}"
-echo "fullname: ${fullname}"
-echo "email: ${email}"
-
-# here we get the crumb data and extract the crumb itself into its own variable
-# test this
+# Use 'initialAdminPassword' to get crumb data for authentication
 cookie_jar="$(mktemp)"
 crumb_data=$(curl -u "admin:$password" --cookie-jar "$cookie_jar" $url/crumbIssuer/api/xml?xpath=concat\(//crumbRequestField,%22:%22,//crumb\))
 arr_crumb=(${crumb_data//:/ })
 crumb=$(echo ${arr_crumb[1]})
 
-# use curl to make a POST request that creates an admin user with the credentials
-# path is <jenkins ip>:8080/setupWizard/createAdminUser
-# changed "--data-raw" to "--data"
+# POST request to create a Jenkins admin user
 curl -X POST -u "admin:$password" $url/setupWizard/createAdminUser \
         -H "Connection: keep-alive" \
         -H "Accept: application/json, text/javascript" \
@@ -68,7 +56,7 @@ crumb_data=$(curl -u "$username:$new_password" --cookie-jar "$cookie_jar" $url/c
 arr_crumb=(${crumb_data//:/ })
 crumb=$(echo ${arr_crumb[1]})
 
-# MAKE THE REQUEST TO DOWNLOAD AND INSTALL REQUIRED MODULES
+# POST request to install recommended plugins
 curl -X POST -u "$username:$new_password" $url/pluginManager/installPlugins \
   -H 'Connection: keep-alive' \
   -H 'Accept: application/json, text/javascript, */*; q=0.01' \
@@ -91,6 +79,7 @@ crumb_data=$(curl -u "$username:$new_password" --cookie-jar "$cookie_jar" $url/c
 arr_crumb=(${crumb_data//:/ })
 crumb=$(echo ${arr_crumb[1]})
 
+# POST request to set the Jenkins URL
 curl -X POST -u "$username:$new_password" $url/setupWizard/configureInstance \
   -H 'Connection: keep-alive' \
   -H 'Accept: application/json, text/javascript, */*; q=0.01' \
