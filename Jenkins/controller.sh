@@ -11,6 +11,15 @@ sudo yum -y install java-11-openjdk java-11-openjdk-devel
 sudo wget -P /etc/yum.repos.d "http://pkg.jenkins-ci.org/redhat-stable/jenkins.repo"
 sudo rpm --import https://pkg.jenkins.io/redhat/jenkins.io.key
 sudo yum -y install jenkins
+# get/validate/install azure cli
+sudo rpm --import https://packages.microsoft.com/keys/microsoft.asc
+echo -e "[azure-cli]
+name=Azure CLI
+baseurl=https://packages.microsoft.com/yumrepos/azure-cli
+enabled=1
+gpgcheck=1
+gpgkey=https://packages.microsoft.com/keys/microsoft.asc" | sudo tee /etc/yum.repos.d/azure-cli.repo
+sudo yum -y install azure-cli
 
 sudo systemctl start jenkins
 sudo systemctl enable jenkins
@@ -65,7 +74,7 @@ curl -X POST -u "$username:$new_password" $url/pluginManager/installPlugins \
   -H 'Content-Type: application/json' \
   -H 'Accept-Language: en,en-US;q=0.9,it;q=0.8' \
   --cookie $cookie_jar \
-  --data "{'dynamicLoad':true,'plugins':['cloudbees-folder','antisamy-markup-formatter','build-timeout','credentials-binding','timestamper','ws-cleanup','ant','gradle','workflow-aggregator','github-branch-source','pipeline-github-lib','pipeline-stage-view','git','ssh-slaves','matrix-auth','pam-auth','ldap','email-ext','mailer'],'Jenkins-Crumb':'$crumb'}"
+  --data "{'dynamicLoad':true,'plugins':['cloudbees-folder','antisamy-markup-formatter','build-timeout','credentials-binding','timestamper','ws-cleanup','ant','gradle','workflow-aggregator','github-branch-source','pipeline-github-lib','pipeline-stage-view','git','ssh-slaves','matrix-auth','pam-auth','ldap','email-ext','mailer','azure-cli'],'Jenkins-Crumb':'$crumb'}"
 
 
 ################################
