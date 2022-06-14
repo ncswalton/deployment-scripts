@@ -6,6 +6,8 @@
 
 sudo yum update -y
 sudo yum -y install java-11-openjdk java-11-openjdk-devel
+sudo yum -y install git
+sudo yum -y install libicu
 
 # get/validate/install jenkins
 sudo wget -P /etc/yum.repos.d "http://pkg.jenkins-ci.org/redhat-stable/jenkins.repo"

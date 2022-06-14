@@ -3,6 +3,8 @@
 sudo yum update -y
 sudo yum -y install java-11-openjdk java-11-openjdk-devel
 sudo yum -y install maven
+sudo yum -y install git
+sudo yum -y install libicu
 mkdir /opt/jenkins
 
 url="http://$1:8080" # URL of Controller
