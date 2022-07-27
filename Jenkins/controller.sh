@@ -30,14 +30,14 @@ sudo systemctl enable jenkins
 # Configuration Step 1 - Unlock
 ################################
 
-url=http://10.6.0.4:8080 # changed from 10.5.0.4. Need to find a good way to parameterize this.
+url="http://$1:8080" # First argument is controllerIp
 password=$(sudo cat /var/lib/jenkins/secrets/initialAdminPassword)
 
 # create variables for Jenkins credentials
 # they are passed in as secure parameters
 # url encode with python
-username=$(python -c "import urllib;print urllib.quote(raw_input(), safe='')" <<< $1) # First argument is username
-new_password=$(python -c "import urllib;print urllib.quote(raw_input(), safe='')" <<< $2) # Second argument is password
+username=$(python -c "import urllib;print urllib.quote(raw_input(), safe='')" <<< $2) # Second argument is username
+new_password=$(python -c "import urllib;print urllib.quote(raw_input(), safe='')" <<< $3) # Third argument is password
 fullname=$(python -c "import urllib;print urllib.quote(raw_input(), safe='')" <<< "Jenkins Administrator")
 email=$(python -c "import urllib;print urllib.quote(raw_input(), safe='')" <<< "hello@xyz.com")
 
