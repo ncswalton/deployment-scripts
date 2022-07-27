@@ -11,7 +11,7 @@ mkdir $remotePath
 url="http://$1:8080" # URL of Controller
 password=$2
 username=$3
-nodeName=$4 # Not currently used
+nodeName=$4
 
 # Download agent.jar from the controller
 curl -o /home/$3/agent.jar -Ssl "$url/jnlpJars/agent.jar"
@@ -24,7 +24,7 @@ crumb=$(echo ${arr_crumb[1]})
 remotePathEncoded=$(python -c "import urllib;print urllib.quote(raw_input(), safe='')" <<< $remotePath)
 nodeNameEncoded=$(python -c "import urllib;print urllib.quote(raw_input(), safe='')" <<< $nodeName) 
 # POST request to create a new node
-# TODO: parameter for Node Name (currently hard coded in --data payload)
+
 curl -X POST -u "$username:$password" $url/computer/doCreateItem \
   -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9' \
   -H 'Connection: keep-alive' \
