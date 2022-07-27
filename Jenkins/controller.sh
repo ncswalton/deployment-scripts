@@ -30,7 +30,7 @@ sudo systemctl enable jenkins
 # Configuration Step 1 - Unlock
 ################################
 
-url=http://10.5.0.4:8080
+url=http://10.6.0.4:8080 # changed from 10.5.0.4. Need to find a good way to parameterize this.
 password=$(sudo cat /var/lib/jenkins/secrets/initialAdminPassword)
 
 # create variables for Jenkins credentials
