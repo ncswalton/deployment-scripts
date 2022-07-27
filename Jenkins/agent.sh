@@ -21,7 +21,8 @@ cookie_jar="$(mktemp)"
 crumb_data=$(curl -u "$username:$password" --cookie-jar "$cookie_jar" $url/crumbIssuer/api/xml?xpath=concat\(//crumbRequestField,%22:%22,//crumb\))
 arr_crumb=(${crumb_data//:/ })
 crumb=$(echo ${arr_crumb[1]})
-remotePathEncoded=$(python -c "import urllib;print urllib.quote(raw_input(), safe='')" <<< $remotePath) 
+remotePathEncoded=$(python -c "import urllib;print urllib.quote(raw_input(), safe='')" <<< $remotePath)
+nodeNameEncoded=$(python -c "import urllib;print urllib.quote(raw_input(), safe='')" <<< $nodeName) 
 # POST request to create a new node
 # TODO: parameter for Node Name (currently hard coded in --data payload)
 curl -X POST -u "$username:$password" $url/computer/doCreateItem \
@@ -40,7 +41,7 @@ crumb=$(echo ${arr_crumb[1]})
 
 
 # Get the secret string required for jar execution
-command=$(curl -u $username:$password $url/computer/CentOSDemoAgent/ \
+command=$(curl -u $username:$password $url/computer/$nodeName/ \
   -H "Accept: application/json, text/javascript" \
   -H 'Connection: keep-alive' \
   -H "$crumb_data" \
